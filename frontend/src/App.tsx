@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ProtectedRoute, PublicRoute } from './middleware/MiddlewareRoutes';
 import LoginPage from './pages/LoginPage';
 import UserpanelPage from './pages/UserpanelPage';
 
@@ -7,14 +8,19 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        {/* Default Route */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         
-        {/* Login Route */}
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={
+          <PublicRoute>
+            <LoginPage />
+          </PublicRoute>
+        } />
                 
-        {/* Protected Route */}
-        <Route path="/users" element={<UserpanelPage />} />
+        <Route path="/users" element={
+          <ProtectedRoute>
+            <UserpanelPage />
+          </ProtectedRoute>
+        } />
       </Routes>
     </Router>
   );

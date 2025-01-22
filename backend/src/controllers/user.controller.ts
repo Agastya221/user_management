@@ -2,12 +2,12 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User, { IUser } from '../models/user.model';
 
-const generateAccessToken = (userId: string) => {
-    return jwt.sign({ id: userId }, process.env.JWT_SECRET as string, { expiresIn: '15m' });
+const generateAccessToken = (email: string) => {
+    return jwt.sign({ email: email }, process.env.JWT_SECRET as string, { expiresIn: '15m' });
 };
 
-const generateRefreshToken = (userId: string) => {
-    return jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '7d' });
+const generateRefreshToken = (email: string) => {
+    return jwt.sign({ email: email }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: '7d' });
 };
 
 // Register
@@ -21,10 +21,16 @@ export const registerUser = async (req: Request, res: Response) : Promise<void> 
             res.status(400).json({ message: 'User already exists' });
             return;
         }
-
-        const user = new User({ name, dateOfBirth, email, password });
+        const accessToken = generateAccessToken(email);
+        const refreshToken = generateRefreshToken(email);
+        const user = new User({ name, dateOfBirth, email, password , refreshToken });
         await user.save();
 
+        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true , sameSite: 'none', maxAge: 15 * 60 * 1000 }); 
+        res.cookie('refreshToken', refreshToken, { httpOnly: true,sameSite: 'none', secure: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+
+        
+        
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
@@ -48,15 +54,15 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
             return;
         }
 
-        const accessToken = generateAccessToken(user._id.toString());
-        const refreshToken = generateRefreshToken((user._id.toString()));
+        const accessToken = generateAccessToken(user.email);
+        const refreshToken = generateRefreshToken((user.email));
 
         user.refreshToken = refreshToken;
         await user.save();
 
         // Set tokens in cookies
-        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true , maxAge: 15 * 60 * 1000 }); 
-        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true, maxAge: 7 * 24 * 60 * 60 * 1000 }); 
+        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true , sameSite: 'none', maxAge: 15 * 60 * 1000 }); 
+        res.cookie('refreshToken', refreshToken, { httpOnly: true,sameSite: 'none', secure: true, maxAge: 7 * 24 * 60 * 60 * 1000 }); 
 
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
@@ -141,22 +147,25 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
 
 
 // Refresh Token
-export const generaterefreshToken = async (req: Request, res: Response) => {
+export const refreshAcessToken = async (req: Request, res: Response) : Promise<void> => {
     const refreshToken = req.cookies?.refreshToken;
 
     if (!refreshToken) {
-        return res.status(401).json({ message: 'No refresh token, authorization denied' });
+         res.status(401).json({ message: 'No refresh token, authorization denied' });
+        return;
     }
 
     try {
-        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as string) as { id: string };
-        const user = await User.findById(decoded.id);
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as string) as { email: string };
+        const user = await User.findOne({ email: decoded.email });
 
         if (!user || user.refreshToken !== refreshToken) {
-            return res.status(403).json({ message: 'Invalid refresh token' });
+             res.status(403).json({ message: 'Invalid refresh token' });
+             
+            return;
         }
 
-        const newAccessToken = generateAccessToken(user._id.toString());
+        const newAccessToken = generateAccessToken(user.email);
         res.cookie('accessToken', newAccessToken, { httpOnly: true, maxAge: 15 * 60 * 1000 });
 
         res.status(200).json({ message: 'Token refreshed successfully' });

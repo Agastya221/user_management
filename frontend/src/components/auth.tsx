@@ -9,7 +9,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Mail, Lock, User, Calendar,Building2, Users,  Database  } from 'lucide-react';
 import axios from 'axios';
 
+
+
 const AuthForms = () => {
+  const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: ''
@@ -24,11 +27,16 @@ const AuthForms = () => {
   });
 
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  
+
+
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/login', loginForm);
+      const response = await axios.post('http://localhost:5000/api/login', loginForm, { withCredentials: true }
+
+      );
       console.log('Login successful:', response.data);
       navigate('/users');
 
@@ -50,8 +58,9 @@ const AuthForms = () => {
         email: registerForm.email,
         dateOfBirth: registerForm.dateOfBirth,
         password: registerForm.password
-      });
+      }, { withCredentials: true });
       console.log('Registration successful:', response.data);
+      navigate('/users');
       // Handle successful registration
     } catch (error) {
       setError('Registration failed. Please try again.');
@@ -114,8 +123,8 @@ const AuthForms = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login">Login</TabsTrigger>
+            <TabsList className="grid w-full  grid-cols-2">
+              <TabsTrigger  value="login">Login</TabsTrigger>
               <TabsTrigger value="register">Register</TabsTrigger>
             </TabsList>
 

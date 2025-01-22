@@ -96,7 +96,7 @@ const UserManagementTable: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/getallusers');
+        const response = await axios.get('http://localhost:5000/api/getallusers', { withCredentials: true });
         setUsers(response.data); 
         console.log('Fetched users:', response.data);
       } catch (error) {

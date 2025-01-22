@@ -5,14 +5,13 @@ import App from "./App.tsx";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { EditUserProvider } from "./context/UserContext.tsx";
 
+
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    
-      <TooltipProvider>
+    <TooltipProvider>
       <EditUserProvider>
-        <App />
-        </EditUserProvider>
-      </TooltipProvider>
-    
+          <App />
+      </EditUserProvider>
+    </TooltipProvider>
   </StrictMode>
 );
