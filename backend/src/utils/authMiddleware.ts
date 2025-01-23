@@ -6,8 +6,7 @@ interface AuthRequest extends Request {
 }
 
 const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): void => {
-    const accessToken =
-        req.cookies?.accessToken 
+    const accessToken = req.cookies?.accessToken 
 
     if (!accessToken) {
         console.log(accessToken);

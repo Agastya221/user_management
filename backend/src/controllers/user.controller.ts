@@ -161,6 +161,7 @@ export const refreshAccessToken = async (req: Request, res: Response): Promise<v
     const refreshToken = req.cookies?.refreshToken || req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('refreshToken='))?.split('=')[1];
 
     if(accessToken){
+        console.log(accessToken);
         res.status(200).json({ message: 'accessToken already exist' });
         return;
     }
