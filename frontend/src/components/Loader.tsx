@@ -12,7 +12,7 @@ const Loading: React.FC<LoadingProps> = ({
   message = 'Please wait...', 
   fullScreen = true,
   size = 'md',
-  color = '#4A90E2' // Default to a blue shade
+  color = '#4A90E2' 
 }) => {
   const sizeVariants = {
     sm: 'h-6 w-6',

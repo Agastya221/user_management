@@ -57,24 +57,17 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         const accessToken = generateAccessToken(user.email);
         const refreshToken = generateRefreshToken(user.email);
 
-        console.log('Generated Access Token:', accessToken);
-        console.log('Generated Refresh Token:', refreshToken);
-
         user.refreshToken = refreshToken;
         await user.save();
 
-        // Log cookie size and check cookie setting
-        console.log('Refresh Token Size:', Buffer.byteLength(refreshToken, 'utf8'));
 
         try {
-            console.log('Setting access cookies');
             res.cookie('accessToken', accessToken, { 
                 httpOnly: true, 
                 secure: true, 
                 sameSite: 'none', 
                 maxAge: 15 * 60 * 1000 
             });
-            console.log('Setting refresh cookies:', refreshToken);
             res.cookie('refreshToken', refreshToken, { 
                 httpOnly: true, 
                 secure: true, 

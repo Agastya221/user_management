@@ -61,7 +61,6 @@ const NavItem = ({ icon, label, href, disabled = false }: NavItemProps) => {
 const Sidebar = () => {
   return (
     <div className="w-64 h-screen bg-white border-r border-slate-200 p-4 flex flex-col">
-      {/* Logo */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-800">User Manager</h1>
       </div>
@@ -81,7 +80,7 @@ const Sidebar = () => {
 
       <Separator className="my-4" />
 
-      {/* Disabled Navigation Items */}
+      {/* Disabled Navigation */}
       <div className="space-y-2">
         <NavItem
           icon={<UserPlus className="h-4 w-4" />}

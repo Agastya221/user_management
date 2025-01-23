@@ -16,7 +16,6 @@ const App: React.FC = () => {
           </PublicRoute>
         } />
         
-                
         <Route path="/users" element={
           <ProtectedRoute>
             <UserpanelPage />
