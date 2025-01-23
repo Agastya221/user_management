@@ -144,12 +144,8 @@ export const getuserbyid = async (req: Request, res: Response): Promise<void> =>
 
 
 export const logoutUser = async (req: Request, res: Response): Promise<void> => {
-    // Clear cookies using res.clearCookie
-    res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'none' });
-    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'none' });
-
-  
-    res.setHeader('Set-Cookie', [
+   
+     res.setHeader('Set-Cookie', [
         'accessToken=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0',
         'refreshToken=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0',
     ]);
