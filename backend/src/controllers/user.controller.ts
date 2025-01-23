@@ -74,7 +74,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
                 sameSite: 'none', 
                 maxAge: 15 * 60 * 1000 
             });
-            console.log('Setting refresh cookies');
+            console.log('Setting refresh cookies:', refreshToken);
             res.cookie('refreshToken', refreshToken, { 
                 httpOnly: true, 
                 secure: true, 
