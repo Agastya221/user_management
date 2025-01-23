@@ -11,6 +11,7 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): vo
         req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('accessToken='))?.split('=')[1];
 
     if (!accessToken) {
+        console.log(accessToken);
         res.status(401).json({ message: 'Unauthorized' });
         return;
     }
