@@ -20,7 +20,7 @@ app.use(cookieParser())
 
 app.use(bodyParser.json());
 const corsOptions ={
-    origin:'https://usermanagement-production-5349.up.railway.app', 
+    origin:'http://localhost:5173', 
     credentials:true,
 }
 app.use(
