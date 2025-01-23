@@ -44,7 +44,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <div className='flex justify-center items-center'><Loading /></div> ;
   }
 
-  return isAuthenticated ? children : <Navigate to="/api/login" state={{ from: location }} replace />;
+  return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} replace />;
 };
 
 const PublicRoute = ({ children }: ProtectedRouteProps) => {
@@ -69,7 +69,7 @@ const PublicRoute = ({ children }: ProtectedRouteProps) => {
     ;
   }
 
-  return isAuthenticated ? <Navigate to="/api/users" replace /> : children;
+  return isAuthenticated ? <Navigate to="/users" replace /> : children;
 };
 
 export { ProtectedRoute, PublicRoute };

@@ -8,16 +8,16 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/api/login" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         
-        <Route path="/api/login" element={
+        <Route path="/login" element={
           <PublicRoute>
             <LoginPage />
           </PublicRoute>
         } />
         
                 
-        <Route path="/api/users" element={
+        <Route path="/users" element={
           <ProtectedRoute>
             <UserpanelPage />
           </ProtectedRoute>

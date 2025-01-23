@@ -1,0 +1,7 @@
+{
+    "rewrites": [
+      { "source": "/api/(.*)", "destination": "https://usermanagement-production-5349.up.railway.app" },
+      { "source": "/(.*)", "destination": "/" }
+    ]
+  }
+  
