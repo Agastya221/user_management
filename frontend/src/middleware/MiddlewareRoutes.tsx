@@ -47,29 +47,5 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} replace />;
 };
 
-const PublicRoute = ({ children }: ProtectedRouteProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    const verifyAuth = async () => {
-      try {
-        await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
-        setIsAuthenticated(true);
-      } catch (error) {
-        setIsAuthenticated(false);
-        console.log(error);
-      }
-    };
-
-    verifyAuth();
-  }, []);
-
-  if (isAuthenticated === null) {
-    return <Loading fullScreen  /> 
-    ;
-  }
-
-  return isAuthenticated ? <Navigate to="/users" replace /> : children;
-};
-
-export { ProtectedRoute, PublicRoute };
+export { ProtectedRoute };
