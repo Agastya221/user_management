@@ -61,22 +61,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         await user.save();
 
 
-        try {
-            res.cookie('accessToken', accessToken, { 
-                httpOnly: true, 
-                secure: true, 
-                sameSite: 'none', 
-                maxAge: 15 * 60 * 1000 
-            });
-            res.cookie('rToken', refreshToken, { 
-                httpOnly: true, 
-                secure: true, 
-                sameSite: 'none', 
-                maxAge: 7 * 24 * 60 * 60 * 1000 
-            });
-        } catch (err) {
-            console.error('Error setting cookies:', err);
-        }
+        res.setHeader('Set-Cookie', [
+            `accessToken=${accessToken}; HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`, 
+            `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}`
+        ]);
 
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
