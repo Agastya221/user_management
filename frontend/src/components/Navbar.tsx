@@ -22,13 +22,13 @@ export const  Navbar = () => {
         <div className="  mx-auto px-6 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">User Management</h1>
+              <h1 className="text-xl font-semibold text-gray-900">User Management</h1>
             </div>
             <div className="flex items-center">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <User className="h-9 w-5" />
+                    <User className=" h-9 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">

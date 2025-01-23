@@ -155,7 +155,7 @@ const UserManagementTable: React.FC = () => {
 
   // Handle delete click
   const handleDeleteClick = (userId: number): void => {
-    setUserIdToEdit(userId); 
+    setUserIdToEdit(userId); // 
     setShowDeleteDialog(true);
   };
 
