@@ -55,20 +55,42 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         }
 
         const accessToken = generateAccessToken(user.email);
-        const refreshToken = generateRefreshToken((user.email));
+        const refreshToken = generateRefreshToken(user.email);
+
+        console.log('Generated Access Token:', accessToken);
+        console.log('Generated Refresh Token:', refreshToken);
 
         user.refreshToken = refreshToken;
-        await user.save({ validateBeforeSave: false });
+        await user.save();
 
-        // Set tokens in cookies
-         res.cookie('accessToken', accessToken, { httpOnly: true, secure: true , sameSite: 'none', maxAge: 15 * 60 * 1000 }); 
-        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true,sameSite: "none", maxAge: 7 * 24 * 60 * 60 * 1000 });
+        // Log cookie size and check cookie setting
+        console.log('Refresh Token Size:', Buffer.byteLength(refreshToken, 'utf8'));
+
+        try {
+            res.cookie('accessToken', accessToken, { 
+                httpOnly: true, 
+                secure: true, 
+                sameSite: 'none', 
+                maxAge: 15 * 60 * 1000 
+            });
+
+            res.cookie('refreshToken', refreshToken, { 
+                httpOnly: true, 
+                secure: true, 
+                sameSite: 'none', 
+                maxAge: 7 * 24 * 60 * 60 * 1000 
+            });
+        } catch (err) {
+            console.error('Error setting cookies:', err);
+        }
 
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
+        console.error('Server error:', error);
         res.status(500).json({ message: 'Server error', error });
     }
 };
+
 
 // update user
 
