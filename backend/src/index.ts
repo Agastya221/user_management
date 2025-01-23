@@ -33,12 +33,6 @@ app.use(
 // Routes
 app.use('/api', router);
 
-const frontendPath = path.join(__dirname, '../frontend/build'); // Adjust if needed
-app.use(express.static(frontendPath));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
-});
 
 
 connectDB().then(() => {
