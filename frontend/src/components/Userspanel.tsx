@@ -98,7 +98,6 @@ const UserManagementTable: React.FC = () => {
       try {
         const response = await axios.get('https://usermanagement-production-5349.up.railway.app/api/getallusers', { withCredentials: true });
         setUsers(response.data); 
-        console.log('Fetched users:', response.data);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -112,7 +111,6 @@ const UserManagementTable: React.FC = () => {
   // Handle edit click
   const handleEditClick = (userId: number): void => {
     const user = users.find((user) => user._id === userId);
-    console.log('Editing user:', user);
     if (user) {
       setUserIdToEdit(user._id);
       setEditForm({

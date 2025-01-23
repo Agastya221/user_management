@@ -68,7 +68,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
                 sameSite: 'none', 
                 maxAge: 15 * 60 * 1000 
             });
-            res.cookie('refreshToken', refreshToken, { 
+            res.cookie('rToken', refreshToken, { 
                 httpOnly: true, 
                 secure: true, 
                 sameSite: 'none', 
@@ -157,14 +157,14 @@ export const getuserbyid = async (req: Request, res: Response): Promise<void> =>
 
 export const logoutUser = async (req: Request, res: Response): Promise<void> => {
     res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
+    res.clearCookie('rToken');
     res.status(200).json({ message: 'Logged out successfully' });
 };
 
 
 // Refresh Token
 export const refreshAcessToken = async (req: Request, res: Response) : Promise<void> => {
-    const refreshToken = req.cookies?.refreshToken;
+    const refreshToken = req.cookies?.rToken;
 
     if (!refreshToken) {
          res.status(401).json({ message: 'No refresh token, authorization denied' });
