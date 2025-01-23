@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
             if (error.response?.status === 401) {
                 // Token expired, try to refresh
                 try {
-                  await axios.post('https://usermanagement-production-5349.up.railway.app/api/refreshtoken',{withCredentials: true});
+                  await axios.get('https://usermanagement-production-5349.up.railway.app/api/refreshtoken',{withCredentials: true});
                   setIsAuthenticated(true);
                 } catch ( error ) {
                   setIsAuthenticated(false);
