@@ -58,7 +58,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         const refreshToken = generateRefreshToken((user.email));
 
         user.refreshToken = refreshToken;
-        await user.save();
+        await user.save({ validateBeforeSave: false });
 
         // Set tokens in cookies
          res.cookie('accessToken', accessToken, { httpOnly: true, secure: true , sameSite: 'none', maxAge: 15 * 60 * 1000 }); 
