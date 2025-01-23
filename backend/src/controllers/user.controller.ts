@@ -62,7 +62,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
         // Set tokens in cookies
         res.cookie('accessToken', accessToken, { httpOnly: true, secure: true , sameSite: 'none', maxAge: 15 * 60 * 1000 }); 
-        res.cookie('refreshToken', refreshToken, { httpOnly: true,sameSite: 'none', secure: true, maxAge: 7 * 24 * 60 * 60 * 1000 }); 
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true,sameSite: "none", maxAge: 7 * 24 * 60 * 60 * 1000 }); 
 
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
