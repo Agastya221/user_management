@@ -5,7 +5,7 @@ import connectDB from './config/db';
 import router from './routes/route.routes';
 import cookieParser from 'cookie-parser';
 import 'dotenv/config'
-
+import path from 'path';
 
 const app = express();
 
@@ -33,7 +33,12 @@ app.use(
 // Routes
 app.use('/api', router);
 
+const frontendPath = path.join(__dirname, '../frontend/build'); // Adjust if needed
+app.use(express.static(frontendPath));
 
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
 
 
 connectDB().then(() => {
