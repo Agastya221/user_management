@@ -23,7 +23,7 @@ app.use(cookieParser());
 
 app.use(bodyParser.json());
 const corsOptions ={
-    origin:'https://user-management-two-indol.vercel.app/', 
+    origin:'https://user-management-two-indol.vercel.app', 
     credentials:true,
 }
 app.use(
