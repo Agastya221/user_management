@@ -14,15 +14,14 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        // Try to access a protected route to verify token
-        await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth');
+        await axios.post('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
         setIsAuthenticated(true);
       } catch (error) {
         if (error instanceof AxiosError) {
             if (error.response?.status === 401) {
                 // Token expired, try to refresh
                 try {
-                  await axios.get('https://usermanagement-production-5349.up.railway.app/api/refreshtoken',{withCredentials: true});
+                  await axios.post('https://usermanagement-production-5349.up.railway.app/api/refreshtoken',{withCredentials: true});
                   setIsAuthenticated(true);
                 } catch ( error ) {
                   setIsAuthenticated(false);
@@ -44,8 +43,32 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <div className='flex justify-center items-center'><Loading /></div> ;
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} replace />;
+  return isAuthenticated ? children : <Navigate to="/api/login" state={{ from: location }} replace />;
 };
 
+const PublicRoute = ({ children }: ProtectedRouteProps) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-export { ProtectedRoute };
+  useEffect(() => {
+    const verifyAuth = async () => {
+      try {
+        await axios.post('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
+        setIsAuthenticated(true);
+      } catch (error) {
+        setIsAuthenticated(false);
+        console.log(error);
+      }
+    };
+
+    verifyAuth();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return <Loading fullScreen  /> 
+    ;
+  }
+
+  return isAuthenticated ? <Navigate to="/users" replace /> : children;
+};
+
+export { ProtectedRoute, PublicRoute };

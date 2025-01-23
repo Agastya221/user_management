@@ -10,7 +10,7 @@ export const  Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('https://usermanagement-production-5349.up.railway.app/api/logout', { withCredentials: true });
+      await axios.post('https://usermanagement-production-5349.up.railway.app/api/logout', { withCredentials: true });
       navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);
