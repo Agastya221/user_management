@@ -10,7 +10,7 @@ export const  Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.get('http://localhost:5000/api/logout', { withCredentials: true });
+      await axios.get('https://usermanagement-production-5349.up.railway.app/api/logout', { withCredentials: true });
       navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);
@@ -22,7 +22,7 @@ export const  Navbar = () => {
         <div className="  mx-auto px-6 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-gray-900">User Management</h1>
+              <h1 className="text-xl font-bold text-gray-900">User Management</h1>
             </div>
             <div className="flex items-center">
               <DropdownMenu>

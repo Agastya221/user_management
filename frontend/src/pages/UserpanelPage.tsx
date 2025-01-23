@@ -1,8 +1,7 @@
 import React from "react";
-import Sidebar from "../components/Sidenavbar"; // Ensure this path is correct
+import Sidebar from "../components/Sidenavbar"; 
 import UserManagementTable from "../components/Userspanel";
 import {Navbar} from "@/components/Navbar";
-// Adjust the import path as needed
 
 const RegisterPage: React.FC = () => {
   return (

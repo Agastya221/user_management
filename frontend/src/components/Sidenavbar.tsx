@@ -66,7 +66,6 @@ const Sidebar = () => {
         <h1 className="text-2xl font-bold text-slate-800">User Manager</h1>
       </div>
 
-      {/* Navigation Items */}
       <div className="space-y-2">
         <NavItem
           icon={<User className="h-4 w-4" />}

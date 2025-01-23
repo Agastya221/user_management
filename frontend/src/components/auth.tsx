@@ -34,7 +34,7 @@ const AuthForms = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/login', loginForm, { withCredentials: true }
+      const response = await axios.post('https://usermanagement-production-5349.up.railway.app/api/login', loginForm, { withCredentials: true }
 
       );
       console.log('Login successful:', response.data);
@@ -53,7 +53,7 @@ const AuthForms = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post('https://usermanagement-production-5349.up.railway.app/api/register', {
         name: registerForm.name,
         email: registerForm.email,
         dateOfBirth: registerForm.dateOfBirth,

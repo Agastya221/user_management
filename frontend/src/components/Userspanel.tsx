@@ -96,7 +96,7 @@ const UserManagementTable: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/getallusers', { withCredentials: true });
+        const response = await axios.get('https://usermanagement-production-5349.up.railway.app/api/getallusers', { withCredentials: true });
         setUsers(response.data); 
         console.log('Fetched users:', response.data);
       } catch (error) {
@@ -134,7 +134,7 @@ const UserManagementTable: React.FC = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/api/users/${userIdToEdit}`, {
+      await axios.put(`https://usermanagement-production-5349.up.railway.app/api/users/${userIdToEdit}`, {
         name: editForm.name,
         dateOfBirth: editForm.dateOfBirth,
         email: editForm.email,
@@ -155,7 +155,7 @@ const UserManagementTable: React.FC = () => {
 
   // Handle delete click
   const handleDeleteClick = (userId: number): void => {
-    setUserIdToEdit(userId); // Store the ID of the user to delete
+    setUserIdToEdit(userId); 
     setShowDeleteDialog(true);
   };
 
@@ -167,7 +167,7 @@ const UserManagementTable: React.FC = () => {
     }
 
     try {
-      await axios.delete(`http://localhost:5000/api/users/${userIdToEdit}`);
+      await axios.delete(`https://usermanagement-production-5349.up.railway.app/api/users/${userIdToEdit}`);
       setUsers(users.filter((user) => user._id !== userIdToEdit));
       setShowDeleteDialog(false);
     } catch (error) {
