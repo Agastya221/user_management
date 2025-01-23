@@ -144,18 +144,27 @@ export const getuserbyid = async (req: Request, res: Response): Promise<void> =>
 
 
 export const logoutUser = async (req: Request, res: Response): Promise<void> => {
-    res.clearCookie('accessToken');
-    res.clearCookie('refreshToken');
+    // Clear cookies using res.clearCookie
+    res.clearCookie('accessToken', { httpOnly: true, secure: true, sameSite: 'none' });
+    res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'none' });
+
+  
+    res.setHeader('Set-Cookie', [
+        'accessToken=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0',
+        'refreshToken=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0',
+    ]);
+
     res.status(200).json({ message: 'Logged out successfully' });
 };
 
 
+
 // Refresh Token
-export const refreshAcessToken = async (req: Request, res: Response) : Promise<void> => {
-    const refreshToken = req.cookies?.refreshToken;
+export const refreshAccessToken = async (req: Request, res: Response): Promise<void> => {
+    const refreshToken = req.cookies?.refreshToken || req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('refreshToken='))?.split('=')[1];
 
     if (!refreshToken) {
-         res.status(401).json({ message: 'No refresh token, authorization denied' });
+        res.status(401).json({ message: 'No refresh token, authorization denied' });
         return;
     }
 
@@ -164,16 +173,17 @@ export const refreshAcessToken = async (req: Request, res: Response) : Promise<v
         const user = await User.findOne({ email: decoded.email });
 
         if (!user || user.refreshToken !== refreshToken) {
-             res.status(403).json({ message: 'Invalid refresh token' });
-             
+            res.status(403).json({ message: 'Invalid refresh token' });
             return;
         }
 
         const newAccessToken = generateAccessToken(user.email);
-        res.cookie('accessToken', newAccessToken, { httpOnly: true, maxAge: 15 * 60 * 1000 });
+
+        res.setHeader('Set-Cookie', `accessToken=${newAccessToken}; HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`);
 
         res.status(200).json({ message: 'Token refreshed successfully' });
     } catch (error) {
         res.status(403).json({ message: 'Invalid refresh token', error });
     }
 };
+

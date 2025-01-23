@@ -1,19 +1,22 @@
-import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+
 interface AuthRequest extends Request {
-    user?: any;
+    user?: string | jwt.JwtPayload; 
 }
 
 const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): void => {
-    const accesstoken = req.cookies?.accessToken;
+    const accessToken =
+        req.cookies?.accessToken ||
+        req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('accessToken='))?.split('=')[1];
 
-    if (!accesstoken) {
+    if (!accessToken) {
         res.status(401).json({ message: 'Unauthorized' });
         return;
     }
 
     try {
-        const decoded = jwt.verify(accesstoken, process.env.JWT_SECRET as string);
+        const decoded = jwt.verify(accessToken, process.env.JWT_SECRET as string);
         req.user = decoded;
         next();
     } catch (err) {
@@ -22,3 +25,4 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): vo
 };
 
 export default authMiddleware;
+
