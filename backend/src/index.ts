@@ -18,9 +18,12 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+
+
+
 app.use(bodyParser.json());
 const corsOptions ={
-    origin:'http://localhost:5173', 
+    origin:'https://user-management-two-indol.vercel.app/', 
     credentials:true,
 }
 app.use(
