@@ -145,14 +145,14 @@ export const getuserbyid = async (req: Request, res: Response): Promise<void> =>
 
 export const logoutUser = async (req: Request, res: Response): Promise<void> => {
     res.clearCookie('accessToken');
-    res.clearCookie('rToken');
+    res.clearCookie('refreshToken');
     res.status(200).json({ message: 'Logged out successfully' });
 };
 
 
 // Refresh Token
 export const refreshAcessToken = async (req: Request, res: Response) : Promise<void> => {
-    const refreshToken = req.cookies?.rToken;
+    const refreshToken = req.cookies?.refreshToken;
 
     if (!refreshToken) {
          res.status(401).json({ message: 'No refresh token, authorization denied' });
