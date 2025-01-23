@@ -157,7 +157,13 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
 
 // Refresh Token
 export const refreshAccessToken = async (req: Request, res: Response): Promise<void> => {
+    const accessToken = req.cookies?.accessToken || req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('accessToken='))?.split('=')[1];
     const refreshToken = req.cookies?.refreshToken || req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('refreshToken='))?.split('=')[1];
+
+    if(accessToken){
+        res.status(200).json({ message: 'accessToken already exist' });
+        return;
+    }
 
     if (!refreshToken) {
         res.status(401).json({ message: 'No refresh token, authorization denied' });
