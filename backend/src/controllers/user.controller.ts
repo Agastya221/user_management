@@ -26,8 +26,10 @@ export const registerUser = async (req: Request, res: Response) : Promise<void> 
         const user = new User({ name, dateOfBirth, email, password , refreshToken });
         await user.save();
 
-        res.cookie('accessToken', accessToken, { httpOnly: true, secure: true , sameSite: 'none', maxAge: 15 * 60 * 1000 }); 
-        res.cookie('refreshToken', refreshToken, { httpOnly: true,sameSite: 'none', secure: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
+        res.setHeader('Set-Cookie', [
+            `accessToken=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`, 
+            `refreshToken=${refreshToken}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}`
+        ]);
 
         
         
@@ -62,8 +64,8 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
 
         res.setHeader('Set-Cookie', [
-            `accessToken=${accessToken}; HttpOnly; Secure; SameSite=none; Max-Age=${15 * 60}`, 
-            `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=none; Max-Age=${7 * 24 * 60 * 60}`
+            `accessToken=${accessToken}; HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`, 
+            `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}`
         ]);
 
         res.status(200).json({ message: 'Login successful' });

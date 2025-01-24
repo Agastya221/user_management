@@ -6,13 +6,13 @@ const router = Router();
 
 router.post('/register', registerUser);
 router.post('/login',loginUser);
-router.post('/logout',logoutUser );
+router.get('/logout',logoutUser );
 router.get('/getallusers',authMiddleware,getallusers);
 router.get('/refreshtoken', refreshAccessToken);
 
 router.delete('/users/:id', deleteUser);
 router.put('/users/:id', updateUser);
 
-router.post('/auth', authMiddleware);
+router.get('/auth', authMiddleware);
 
 export default router;
