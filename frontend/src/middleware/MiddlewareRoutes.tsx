@@ -55,7 +55,7 @@ const PublicRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        await axios.post('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
+        await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
         setIsAuthenticated(true);
       } catch (error) {
         setIsAuthenticated(false);
