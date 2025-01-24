@@ -17,7 +17,6 @@ const generateRefreshToken = (email: string) => {
 // Register
 export const registerUser = async (req: Request, res: Response) : Promise<void> => {
     const { name, dateOfBirth, email, password } = req.body;
-    console.log(req.body);
 
     try {
         const userExists = await User.findOne({ email });
@@ -74,7 +73,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
-        console.error('Server error:', error);
         res.status(500).json({ message: 'Server error', error });
     }
 };
@@ -94,7 +92,6 @@ export const getAuthStatus = (req: AuthRequest, res: Response): void => {
             });
         }
     } catch (error) {
-        console.error('Error in /auth/status:', error);
         res.status(500).json({ 
             message: 'Internal server error' 
         });
@@ -198,7 +195,6 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
 
         res.status(200).json({ message: 'Logged out successfully' });
     } catch (error) {
-        console.error('Error during logout:', error);
         res.status(500).json({ message: 'Internal server error during logout' });
     }
 };
@@ -211,7 +207,6 @@ export const refreshAccessToken = async (req: Request, res: Response): Promise<v
     const refreshToken = req.cookies?.refreshToken || req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('refreshToken='))?.split('=')[1];
 
     if(accessToken){
-        console.log(accessToken);
         res.status(200).json({ message: 'accessToken already exist' });
         return;
     }

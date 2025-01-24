@@ -9,8 +9,6 @@ const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): vo
     const accessToken = req.cookies?.accessToken || req.headers['cookie']?.split('; ').find((cookie) => cookie.startsWith('accessToken='))?.split('=')[1];
 
     if (!accessToken) {
-        console.log(accessToken);
-        console.log('Access token is undefined or missing');
         res.status(401).json({ message: 'Unauthorized' });
         return;
     }
