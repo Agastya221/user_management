@@ -173,7 +173,7 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
         // Clear cookies 
         res.clearCookie('accessToken', {
             path: '/',
-            domain: '.railway.app', 
+            domain: 'usermanagement-production-5349.up.railway.app', 
             httpOnly: true,
             secure: true,
             sameSite: 'none',
@@ -181,7 +181,7 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
 
         res.clearCookie('refreshToken', {
             path: '/',
-            domain: '.railway.app', 
+            domain: 'usermanagement-production-5349.up.railway.app', 
             httpOnly: true,
             secure: true,
             sameSite: 'none',
@@ -189,8 +189,8 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
 
         // Optional: Set cookies to expire immediately
         res.setHeader('Set-Cookie', [
-            'accessToken=; Path=/; Domain=.railway.app; HttpOnly; Secure; SameSite=None; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
-            'refreshToken=; Path=/; Domain=.railway.app; HttpOnly; Secure; SameSite=None; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+            'accessToken=; Path=/; Domain=usermanagement-production-5349.up.railway.app; HttpOnly; Secure; SameSite=None;',
+            'refreshToken=; Path=/; Domain=usermanagement-production-5349.up.railway.app; HttpOnly; Secure; SameSite=None; T',
         ]);
 
         res.status(200).json({ message: 'Logged out successfully' });
