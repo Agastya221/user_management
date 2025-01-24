@@ -14,5 +14,8 @@ router.delete('/users/:id', deleteUser);
 router.put('/users/:id', updateUser);
 
 router.get('/auth', authMiddleware);
+router.get('/api/test-auth', authMiddleware, (req, res) => {
+    res.status(200).json({ message: "Auth working!" });
+  });
 
 export default router;

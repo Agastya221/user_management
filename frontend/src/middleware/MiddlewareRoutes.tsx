@@ -14,8 +14,11 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
-        setIsAuthenticated(true);
+        const response = await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
+        if (response.data.authenticated) {
+          setIsAuthenticated(true);
+        }
+    
       } catch (error) {
         if (error instanceof AxiosError) {
             if (error.response?.status === 401) {
