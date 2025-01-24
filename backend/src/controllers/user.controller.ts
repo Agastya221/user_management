@@ -172,22 +172,35 @@ export const getuserbyid = async (req: Request, res: Response): Promise<void> =>
 
 
 export const logoutUser = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // Clear cookies 
+        res.clearCookie('accessToken', {
+            path: '/',
+            domain: '.railway.app', 
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
 
-    res.clearCookie('accessToken',{
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none'});
-    res.clearCookie('refreshToken',{
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none'
-    });
-     res.setHeader('Set-Cookie', [
-        'accessToken=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0',
-        'refreshToken=; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0',
-    ]);
+        res.clearCookie('refreshToken', {
+            path: '/',
+            domain: '.railway.app', 
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        });
 
-    res.status(200).json({ message: 'Logged out successfully' });
+        // Optional: Set cookies to expire immediately
+        res.setHeader('Set-Cookie', [
+            'accessToken=; Path=/; Domain=.railway.app; HttpOnly; Secure; SameSite=None; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+            'refreshToken=; Path=/; Domain=.railway.app; HttpOnly; Secure; SameSite=None; Expires=Thu, 01 Jan 1970 00:00:00 GMT',
+        ]);
+
+        res.status(200).json({ message: 'Logged out successfully' });
+    } catch (error) {
+        console.error('Error during logout:', error);
+        res.status(500).json({ message: 'Internal server error during logout' });
+    }
 };
 
 
