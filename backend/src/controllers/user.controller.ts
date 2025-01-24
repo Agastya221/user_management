@@ -30,7 +30,7 @@ export const registerUser = async (req: Request, res: Response) : Promise<void> 
         await user.save();
 
         res.setHeader('Set-Cookie', [
-            `accessToken=${accessToken}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`, 
+            `accessToken=${accessToken}; Path=/;  HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`, 
             `refreshToken=${refreshToken}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}`
         ]);
 
@@ -67,10 +67,11 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
 
         res.setHeader('Set-Cookie', [
-            `accessToken=${accessToken}; HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`, 
-            `refreshToken=${refreshToken}; HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}`
+            `accessToken=${accessToken}; path=/;  HttpOnly; Secure; SameSite=None; Max-Age=${15 * 60}`, 
+            `refreshToken=${refreshToken}; path=/;  HttpOnly; Secure; SameSite=None; Max-Age=${7 * 24 * 60 * 60}`
         ]);
 
+        
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
@@ -189,8 +190,8 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
 
         // Optional: Set cookies to expire immediately
         res.setHeader('Set-Cookie', [
-            'accessToken=; Path=/; Domain=usermanagement-production-5349.up.railway.app; HttpOnly; Secure; SameSite=None;',
-            'refreshToken=; Path=/; Domain=usermanagement-production-5349.up.railway.app; HttpOnly; Secure; SameSite=None; T',
+            'accessToken=; Path=/;HttpOnly; Secure; SameSite=None;',
+            'refreshToken=; Path=/;; HttpOnly; Secure; SameSite=None; ',
         ]);
 
         res.status(200).json({ message: 'Logged out successfully' });
