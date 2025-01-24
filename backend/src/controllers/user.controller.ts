@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import User, { IUser } from '../models/user.model';
 
+interface AuthRequest extends Request {
+    user?: string | jwt.JwtPayload; // Define the user property
+}
+
 const generateAccessToken = (email: string) => {
     return jwt.sign({ email: email }, process.env.JWT_SECRET as string, { expiresIn: '15m' });
 };
@@ -72,6 +76,28 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     } catch (error) {
         console.error('Server error:', error);
         res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
+export const getAuthStatus = (req: AuthRequest, res: Response): void => {
+    try {
+     
+        if (req.user) {
+            res.status(200).json({ 
+                authenticated: true, 
+                user: req.user 
+            });
+        } else {
+            res.status(200).json({ 
+                authenticated: false 
+            });
+        }
+    } catch (error) {
+        console.error('Error in /auth/status:', error);
+        res.status(500).json({ 
+            message: 'Internal server error' 
+        });
     }
 };
 
