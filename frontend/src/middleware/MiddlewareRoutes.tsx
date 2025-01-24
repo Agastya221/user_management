@@ -57,9 +57,12 @@ const PublicRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
-        setIsAuthenticated(true);
-      } catch {
+        const response = await axios.get(
+          'https://usermanagement-production-5349.up.railway.app/api/auth/status',
+          { withCredentials: true }
+        );
+        setIsAuthenticated(response.data.authenticated);
+      } catch  {
         setIsAuthenticated(false);
       }
     };
@@ -68,8 +71,7 @@ const PublicRoute = ({ children }: ProtectedRouteProps) => {
   }, []);
 
   if (isAuthenticated === null) {
-    return <Loading fullScreen  /> 
-    ;
+    return <Loading fullScreen />;
   }
 
   return isAuthenticated ? <Navigate to="/users" replace /> : children;
