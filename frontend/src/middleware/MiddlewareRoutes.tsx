@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import axios,{ AxiosError } from 'axios';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Loading from '../components/Loader';
 
@@ -14,36 +14,38 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const response = await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
-        if (response.data.authenticated) {
-          setIsAuthenticated(true);
-        }
-    
+        const response = await axios.get(
+          'https://usermanagement-production-5349.up.railway.app/api/auth/status',
+          { withCredentials: true }
+        );
+        setIsAuthenticated(response.data.authenticated);
       } catch (error) {
-        if (error instanceof AxiosError) {
-            if (error.response?.status === 401) {
-                // Token expired, try to refresh
-                try {
-                  await axios.get('https://usermanagement-production-5349.up.railway.app/api/refreshtoken',{withCredentials: true});
-                  setIsAuthenticated(true);
-                } catch ( error ) {
-                  setIsAuthenticated(false);
-                  console.log(error);
-                }
-              } 
-              else {
-                setIsAuthenticated(false);
-              }
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 401) {
+            try {
+              // Attempt token refresh
+              await axios.get(
+                'https://usermanagement-production-5349.up.railway.app/api/refreshtoken',
+                { withCredentials: true }
+              );
+              setIsAuthenticated(true);
+            } catch {
+              setIsAuthenticated(false);
+            }
+          } else {
+            setIsAuthenticated(false);
+          }
+        } else {
+          setIsAuthenticated(false);
         }
-        
       }
     };
 
     verifyAuth();
-  }, []);
+  }, [location]);
 
   if (isAuthenticated === null) {
-    return <div className='flex justify-center items-center'><Loading /></div> ;
+    return <div className="flex justify-center items-center"><Loading /></div>;
   }
 
   return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} replace />;
@@ -57,9 +59,8 @@ const PublicRoute = ({ children }: ProtectedRouteProps) => {
       try {
         await axios.get('https://usermanagement-production-5349.up.railway.app/api/auth', { withCredentials: true });
         setIsAuthenticated(true);
-      } catch (error) {
+      } catch {
         setIsAuthenticated(false);
-        console.log(error);
       }
     };
 
